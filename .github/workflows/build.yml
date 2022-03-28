@@ -30,4 +30,4 @@ jobs:
         echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
     - name: Build
       run: |
-        docker build .
+        docker build ./libreswan-l2tp
