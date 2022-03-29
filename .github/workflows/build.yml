@@ -26,4 +26,4 @@ jobs:
     - name: Login to GitHub Package Registry        
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Build
-      run: make build -C libreswan USER=${{ github.actor }}
+      run: make buildx -C libreswan USER=${{ github.actor }}

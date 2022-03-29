@@ -6,4 +6,9 @@ build:
 		--tag ghcr.io/$(USER)/base-images/$(IMAGE):$(SWAN_VER) --tag ghcr.io/$(USER)/base-images/$(IMAGE):latest \
 		--tag $(USER)/$(IMAGE):$(SWAN_VER) --tag $(USER)/$(IMAGE):latest .
 
-.PHONY: build
+buildx:
+	docker buildx build --platform linux/amd64,linux/arm64 --build-arg SWAN_VER=$(SWAN_VER) \
+		--tag ghcr.io/$(USER)/base-images/$(IMAGE):$(SWAN_VER) --tag ghcr.io/$(USER)/base-images/$(IMAGE):latest \
+		--tag $(USER)/$(IMAGE):$(SWAN_VER) --tag $(USER)/$(IMAGE):latest .
+
+.PHONY: build buildx
