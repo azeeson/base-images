@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM} alpine:3.14
+FROM alpine:3.14
 
 LABEL maintainer="Azeeson <azeeson@gmail.com>"
 
@@ -14,8 +14,6 @@ ENV \
     DNS_SRV1=192.168.42.1 \
     DNS_SRV2=8.8.8.8
 
-WORKDIR /opt/src
-
 RUN set -x \
     && export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
     && apk add --no-cache \
@@ -23,6 +21,7 @@ RUN set -x \
          libcap-ng libcurl libevent linux-pam musl nspr nss nss-tools \
          bison flex gcc make libc-dev bsd-compat-headers linux-pam-dev \
          nss-dev libcap-ng-dev libevent-dev curl-dev nspr-dev dnsmasq \
+    && cd /opt/src \
     && wget -t 3 -T 30 -nv -O libreswan.tar.gz "https://github.com/libreswan/libreswan/archive/v${SWAN_VER}.tar.gz" \
     || wget -t 3 -T 30 -nv -O libreswan.tar.gz "https://download.libreswan.org/libreswan-${SWAN_VER}.tar.gz" \
     && tar xzf libreswan.tar.gz \
