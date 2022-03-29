@@ -25,7 +25,11 @@ jobs:
       run: echo "Platforms - ${{ steps.buildx.outputs.platforms }}"
     - name: Login to GitHub Package Registry        
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    - name: Log in to Docker Hub
+      run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
     - name: Build
       run: make build -C libreswan REPOSITORY=${{ github.repository }} USER=${{ github.actor }}
+    - name: Push
+      run: make push -C libreswan REPOSITORY=${{ github.repository }} USER=${{ github.actor }}
     - name: Show images
       run: docker images
