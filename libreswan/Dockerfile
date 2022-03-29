@@ -15,13 +15,13 @@ ENV \
     DNS_SRV2=8.8.8.8
 
 RUN set -x \
+    && mkdir -p /opt/src && cd /opt/src \
     && export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
     && apk add --no-cache \
          bash bind-tools coreutils openssl uuidgen wget xl2tpd iproute2 \
          libcap-ng libcurl libevent linux-pam musl nspr nss nss-tools \
          bison flex gcc make libc-dev bsd-compat-headers linux-pam-dev \
          nss-dev libcap-ng-dev libevent-dev curl-dev nspr-dev dnsmasq \
-    && cd /opt/src \
     && wget -t 3 -T 30 -nv -O libreswan.tar.gz "https://github.com/libreswan/libreswan/archive/v${SWAN_VER}.tar.gz" \
     || wget -t 3 -T 30 -nv -O libreswan.tar.gz "https://download.libreswan.org/libreswan-${SWAN_VER}.tar.gz" \
     && tar xzf libreswan.tar.gz \
