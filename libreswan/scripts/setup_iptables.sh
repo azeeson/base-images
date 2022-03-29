@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+echo "Start: Configuration IPTables"
 
 NET_IFACE=$(route 2>/dev/null | grep -m 1 '^default' | grep -o '[^ ]*$')
 [ -z "$NET_IFACE" ] && NET_IFACE=$(ip -4 route list 0/0 2>/dev/null | grep -m 1 -Po '(?<=dev )(\S+)')
@@ -53,3 +54,4 @@ if ! iptables -t nat -C POSTROUTING -s "$L2TP_NET" -o "$NET_IFACE" -j MASQUERADE
   $ipp -s "$XAUTH_NET" -o "$NET_IFACE" -m policy --dir out --pol none -j MASQUERADE
   $ipp -s "$L2TP_NET" -o "$NET_IFACE" -j MASQUERADE
 fi
+echo "Finish: Configuration IPTables"

@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Start: Configuration Dnsmasq"
+
 # Configuration Dnsmasq
 dhcp_routes=""
 for route in $(echo $VPN_ROUTES | tr "," "\n" | tr -s " " "\n")
@@ -42,3 +44,5 @@ dhcp-option=249,$dhcp_routes
 # Экспортируем дополнительные хосты при необходимости.
 $dhcp_address
 EOF
+
+echo "Finish: Configuration Dnsmasq"

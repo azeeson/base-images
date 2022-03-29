@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+echo "Start: Configuration IPsec/l2tp"
 
 # Create IPsec config
 cat > /etc/ipsec.conf <<EOF
@@ -114,3 +115,4 @@ done
 
 # Update file attributes
 chmod 600 /etc/ipsec.secrets /etc/ppp/chap-secrets /etc/ipsec.d/passwd
+echo "Finish: Configuration IPsec/l2tp"
