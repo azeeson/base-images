@@ -5,11 +5,11 @@ ip link delete dummy0 >/dev/null 2>&1
 echo $(date +'%Y-%m-%d %H:%M')
 
 setup_ipsec_l2tp.sh
-sleep 10
+sleep 5
 setup_iptables.sh
-sleep 10
+sleep 5
 setup_dnsmasq.sh
-sleep 10
+sleep 5
 
 echo "Starting IPsec service..."
 mkdir -p /run/pluto /var/run/pluto

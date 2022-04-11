@@ -3,6 +3,8 @@
 set -e
 echo "Start: Configuration IPsec/l2tp"
 
+DNS_SRV1=${L2TP_LOCAL}
+
 # Create IPsec config
 cat > /etc/ipsec.conf <<EOF
 version 2.0
@@ -105,7 +107,7 @@ do
     USER_IP=$(echo -n $vpn_user | awk -F ":" '{print $3}')
 
     echo "Add VPN User: $USER_NAME"
-    echo "\"$USER_NAME\" l2tpd \"$USER_PASSWORD\" $USER_IP" \
+    echo "\"$USER_NAME\" l2tpd \"$USER_PASSWORD\" ${USER_IP:-*}" \
         >> /etc/ppp/chap-secrets
 
     echo "$USER_NAME:$USER_PASSWORD_ENC:xauth-psk" \

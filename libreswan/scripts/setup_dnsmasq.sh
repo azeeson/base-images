@@ -4,6 +4,10 @@ set -e
 
 echo "Start: Configuration Dnsmasq"
 
+if [ "${VPN_ROUTES}" = "all" ]; then
+    VPN_ROUTES="0.0.0.0/1,128.0.0.0/1"
+fi
+
 # Configuration Dnsmasq
 dhcp_routes=""
 for route in $(echo $VPN_ROUTES | tr "," "\n" | tr -s " " "\n")
@@ -23,6 +27,7 @@ do
 done
 
 
+# dnsmasq --help dhcp
 
 cat > /etc/dnsmasq.conf <<EOF
 # Указываем интерфейсы для прослушивания.
@@ -38,6 +43,10 @@ no-resolv
 no-hosts
 
 dhcp-range=$dhcp_range
+# Gateway
+dhcp-option=3,${L2TP_LOCAL}
+# DNS
+dhcp-option=6,${L2TP_LOCAL}
 dhcp-option=121,$dhcp_routes
 dhcp-option=249,$dhcp_routes
 

@@ -6,13 +6,16 @@ ARG SWAN_VER=4.4
 
 ENV \
     LANG=C.UTF-8 \
+    # ...
     L2TP_LOCAL=192.168.42.1 \
     L2TP_NET=192.168.42.0/24 \
     L2TP_POOL=192.168.42.10-192.168.42.250 \
+    # ...
     XAUTH_NET=192.168.43.0/24 \
     XAUTH_POOL=192.168.43.10-192.168.43.250 \
-    DNS_SRV1=192.168.42.1 \
-    DNS_SRV2=8.8.8.8
+    # ...
+    DNS_SRV1=8.8.8.8 \
+    DNS_SRV2=8.8.4.4
 
 RUN set -x \
     && mkdir -p /opt/src && cd /opt/src \
@@ -39,10 +42,10 @@ RUN set -x \
          nss-dev libcap-ng-dev libevent-dev curl-dev nspr-dev \
     && rm -rf /var/cache/apk/*
 
-COPY ./scripts/setup_dnsmasq.sh /usr/bin/setup_dnsmasq.sh
+COPY ./scripts/setup_vpn.sh /usr/bin/setup_vpn.sh
 COPY ./scripts/setup_ipsec_l2tp.sh /usr/bin/setup_ipsec_l2tp.sh
 COPY ./scripts/setup_iptables.sh /usr/bin/setup_iptables.sh
-COPY ./scripts/setup_vpn.sh /usr/bin/setup_vpn.sh
+COPY ./scripts/setup_dnsmasq.sh /usr/bin/setup_dnsmasq.sh
 
 COPY ./scripts/entrypoint.sh /entrypoint.sh
 
