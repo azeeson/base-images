@@ -1,0 +1,33 @@
+FROM golang:1.19-alpine3.17 as build
+
+LABEL maintainer="Azeeson <azeeson@gmail.com>"
+
+ARG TARGETOS
+ARG TARGETARCH
+ARG HUGO_VERSION=0.108.0
+
+ENV LANG=C.UTF-8
+
+RUN set -x \
+    && apk --update add musl-dev util-linux-dev gcc g++ \
+    && rm -rf /var/cache/apk/* \
+    && mkdir -p /opt/src \
+    && cd /opt/src \
+    && wget https://github.com/gohugoio/hugo/archive/refs/tags/v${HUGO_VERSION}.tar.gz -O hugo.tar.gz \
+    && tar xzf hugo.tar.gz \
+    && mkdir /usr/local/hugo \
+    && cd /opt/src/hugo-${HUGO_VERSION} \
+    && cp ./LICENSE /usr/local/hugo/LICENSE \
+    && cp ./README.md /usr/local/hugo/README.md \
+    && go get ./... \
+    && env CGO_ENABLED=1 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -a -tags extended \
+    -ldflags '-linkmode external -extldflags "-static" -s -w -X github.com/gohugoio/hugo/common/hugo.vendorInfo=gohugoio' \
+    -o /usr/local/hugo/hugo
+
+
+FROM alpine:3.16
+
+COPY --from=build /usr/local/hugo /usr/local/hugo
+RUN ln -s /usr/local/hugo/hugo /usr/local/bin/hugo
+
+WORKDIR /data
